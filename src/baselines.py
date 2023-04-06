@@ -1,7 +1,7 @@
 from sklearn import svm
 from sklearn.linear_model import SGDClassifier, Perceptron
 from sklearn.decomposition import PCA
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn.model_selection import train_test_split
 from statistics import mean, stdev
 

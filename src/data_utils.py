@@ -89,6 +89,20 @@ def load_data(source: Literal["roberta", "bert4patent"]):
     return inputs_flattened, encoded_labels
 
 
+class QuatentPatentSentenceDataset:
+    def __init__(self, source: Literal["roberta", "bert4patent"]):
+        self.source = source
+        self.data = load_data(source)
+        l2i, i2l = self._compute_l2i_and_i2l()
+        self.labels = list(l2i.keys())
+
+    def _compute_l2i_and_i2l(self):
+        labels_per_patent = load_labels_per_patent()
+        labels_flattened = flatten_labels_per_patent(labels_per_patent)
+        return compute_l2i_and_i2l(labels_flattened)
+
+
+
 if __name__ == "__main__":
     for source in ["roberta", "bert4patent"]:
         labels_per_patent = load_labels_per_patent()
