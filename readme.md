@@ -7,3 +7,8 @@
 |roberta_sklearn.SGDClassifier()|0.73|+/- 0.022|
 |bert4patent_sklearn.Perceptron()|0.705|+/- 0.023|
 |bert4patent_sklearn.SGDClassifier()|0.713|+/- 0.022|
+
+## Confusion Matrices
+### bert4patent _ 
+
+image.png
