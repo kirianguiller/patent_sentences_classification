@@ -38,7 +38,7 @@ def compute_and_save_conf_matrix(model, X_test, y_test, name, labels):
         print(title)
         print(disp.confusion_matrix)
 
-        plt.savefig(PATH_FIGURES_FOLDER / (name + "_" + shortname + ".jpg"))
+        plt.savefig(PATH_FIGURES_FOLDER / ("confusion-matrice_" + name + "_" + shortname + ".jpg"))
         plt.close()
 
 
