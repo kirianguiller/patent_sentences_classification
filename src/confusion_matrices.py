@@ -13,8 +13,27 @@ from data_utils import QuatentPatentSentenceDataset, load_data_splitted
 
 PATH_FIGURES_FOLDER = PATH_LABELS_TXT = Path(__file__).parent.parent / "figures"
 
+labels = [
+    'PATENT TITLE',
+    'SECTION TITLE',
+    'SECTION SUBTITLE',
+    'TECHNICAL FIELD',
+    'DEFINITION',
+    'REFERENCE',
+    'REFERENCE_PROBLEM',
+    'REFERENCE_ADVANTAGE',
+    'REPHRASED CLAIM',
+    'FIGURE DESCRIPTION',
+    'EMBODIMENT',
+    'INVENTION_ADVANTAGE',
+    'INVENTION_PROBLEM',
+    'JURIDICAL TEMPLATE',
+    'TECHNICAL TEMPLATE',
+    'OTHER',
+    ]
+
 def compute_and_save_conf_matrix(model, X_test, y_test, name, labels):
-    plt.rcParams["figure.figsize"] = (9, 9)
+    plt.rcParams["figure.figsize"] = (10, 10)
 
 
     # Plot non-normalized confusion matrix
@@ -46,7 +65,7 @@ def compute_and_save_conf_matrix(model, X_test, y_test, name, labels):
 for source in ["roberta", "bert4patent"]:
     dataset = QuatentPatentSentenceDataset(source)
     X_train, y_train, X_test, y_test, l2i = load_data_splitted(source)
-    labels = list(l2i.keys())
+    # labels = list(l2i.keys())
     pca = PCA(n_components=500)
 
     X_train_reduced = pca.fit_transform(X_train)

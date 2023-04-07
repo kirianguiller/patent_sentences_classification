@@ -1,6 +1,6 @@
 import json
 import os
-from typing import Any, Dict, List, Literal
+from typing import Any, Dict, List, Literal, Union
 import numpy as np
 from numpy.typing import NDArray
 from pathlib import Path
@@ -75,6 +75,10 @@ def compute_l2i_and_i2l_from_labels_per_patent(labels_per_patent):
     labels_flattened = flatten_labels_per_patent(labels_per_patent)
     return compute_l2i_and_i2l(labels_flattened)
 
+def compute_l2i_and_i2l_from_labels_list(labels: List[str]):
+    return compute_l2i_and_i2l(labels)
+
+
 def get_encoded_labels(labels, l2i):
     encoded_labels = []
     for label in labels:
@@ -95,7 +99,7 @@ def load_data(source: Literal["roberta", "bert4patent"]):
     return inputs_flattened, encoded_labels
 
 
-def load_data_splitted(source: Literal["roberta", "bert4patent"]):
+def load_data_splitted(source: Literal["roberta", "bert4patent"], labels: Union[List[str], None]=None ):
     inputs_per_patent = load_inputs_per_patent(source)
     labels_per_patent = load_labels_per_patent()
 
@@ -112,7 +116,11 @@ def load_data_splitted(source: Literal["roberta", "bert4patent"]):
     labels_flattened_train = flatten_labels_per_patent(labels_per_patent_train)
     labels_flattened_test = flatten_labels_per_patent(labels_per_patent_test)
 
-    l2i, i2l = compute_l2i_and_i2l_from_labels_per_patent(labels_per_patent)
+    if labels == None:
+        l2i, i2l = compute_l2i_and_i2l_from_labels_per_patent(labels_per_patent)
+    else:
+        l2i, i2l = compute_l2i_and_i2l_from_labels_list(labels)
+
     encoded_labels_train = get_encoded_labels(labels_flattened_train, l2i)
     encoded_labels_test = get_encoded_labels(labels_flattened_test, l2i)
 
