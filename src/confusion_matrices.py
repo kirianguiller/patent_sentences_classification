@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import ConfusionMatrixDisplay
 from pathlib import Path
 
-from data_utils import QuatentPatentSentenceDataset
+from data_utils import QuatentPatentSentenceDataset, load_data_splitted
 
 PATH_FIGURES_FOLDER = PATH_LABELS_TXT = Path(__file__).parent.parent / "figures"
 
@@ -44,10 +44,8 @@ def compute_and_save_conf_matrix(model, X_test, y_test, name, labels):
 
 for source in ["roberta", "bert4patent"]:
     dataset = QuatentPatentSentenceDataset(source)
-    X_true, y_true = dataset.data
-
-    X_train, X_test, y_train, y_test = train_test_split(X_true, y_true, test_size=0.2)
-
+    X_train, y_train, X_test, y_test, l2i = load_data_splitted(source)
+    labels = list(l2i.keys())
     pca = PCA(n_components=500)
 
     X_train_reduced = pca.fit_transform(X_train)
@@ -57,14 +55,13 @@ for source in ["roberta", "bert4patent"]:
 
     perceptron_model.fit(X_train_reduced, y_train)
 
-    compute_and_save_conf_matrix(perceptron_model, X_test_reduced, y_test, source + "_Perceptron", dataset.labels)
+    compute_and_save_conf_matrix(perceptron_model, X_test_reduced, y_test, source + "_Perceptron", labels)
 
     # SGDClassifier
-
     clf = SGDClassifier()
     clf.fit(X_train_reduced, y_train)
 
     y_test_pred = clf.predict(X_test_reduced)
 
-    compute_and_save_conf_matrix(perceptron_model, X_test_reduced, y_test, source + "_SGDClassifier", dataset.labels)
+    compute_and_save_conf_matrix(clf, X_test_reduced, y_test, source + "_SGDClassifier", labels)
     
