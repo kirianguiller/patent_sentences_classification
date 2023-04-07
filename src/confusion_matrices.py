@@ -14,16 +14,16 @@ from data_utils import QuatentPatentSentenceDataset, load_data_splitted
 PATH_FIGURES_FOLDER = PATH_LABELS_TXT = Path(__file__).parent.parent / "figures"
 
 def compute_and_save_conf_matrix(model, X_test, y_test, name, labels):
-    np.set_printoptions(precision=1)
-    plt.rcParams["figure.figsize"] = (15, 15)
+    plt.rcParams["figure.figsize"] = (9, 9)
 
 
     # Plot non-normalized confusion matrix
     titles_options = [
-        ("Confusion matrix, without normalization", None, "absolute"),
-        ("Normalized confusion matrix", "true", "normalized"),
+        ("Confusion matrix, without normalization", None, "absolute", None),
+        ("Normalized confusion matrix", "true", "normalized", ".2f"),
     ]
-    for title, normalize, shortname in titles_options:
+    print(labels)
+    for title, normalize, shortname, values_format in titles_options:
         disp = ConfusionMatrixDisplay.from_estimator(
             model,
             X_test,
@@ -31,7 +31,8 @@ def compute_and_save_conf_matrix(model, X_test, y_test, name, labels):
             display_labels=labels,
             cmap=plt.cm.Blues,
             normalize=normalize,
-            xticks_rotation=45,
+            xticks_rotation=90,
+            values_format=values_format,
         )
         disp.ax_.set_title(name + " : " + title)
         # disp.ax_.set_xticklabels(labels, rotation = 45)
